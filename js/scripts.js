@@ -75,13 +75,46 @@ function cleanInputs() {
   weightInput.value = "";
 }
 
+function validDigits(text) {
+  return text.replace(/[^0-9]/g, "");
+}
+
+function calcIMC(weight, height) {
+  const imc = weight / (height * height).toFixed(1);
+
+  return imc;
+}
+
 // Inicialização
 
 createTable(data);
 
 // Eventos
 
+[heightInput, weightInput].forEach((el) => {
+  el.addEventListener("input", (e) => {
+    const updateValue = validDigits(e.target.value);
+
+    e.target.value = updateValue;
+  });
+});
+
+calcBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  const weight = +weightInput.value.replace(",", ".");
+  const height = +heightInput.value.replace(",", ".");
+
+  if (!weight || !height) {
+    alert("Preencha todos os campos!");
+    return;
+  }
+
+  const imc = calcIMC(weight, height);
+});
+
 clearBtn.addEventListener("click", (e) => {
   e.preventDefault();
+
   cleanInputs();
 });
